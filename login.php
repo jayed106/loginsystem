@@ -1,3 +1,34 @@
+<?php
+$login =false;
+$error = false;
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+
+include 'partials/_DBConnect.php';
+$username= $_POST['name'];
+$password= $_POST['password'];
+
+  $sql="Select *from users where username='$username' AND password='$password' ";
+  $result= mysqli_query($conn,$sql);
+  $num = mysqli_num_rows($result);
+  if($num==1){
+    $login = true;
+    session_start();
+    $_SESSION['loggedin']=true;
+    $_SESSION['username']=$username;
+    header("location:welcome.php");
+  }
+else{
+  $error = true;
+}
+}
+
+
+
+
+?>
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -8,14 +39,44 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>login</title>
+    <title>signup</title>
   </head>
   <body>
     <?php
     require 'partials/_nav.php';
-
+    if($login){
+     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong>you are successfully logged in.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
+    if($error){
+     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>ERROR!</strong>Insufficient login credentials 
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
 
     ?>
+   
+    <div class="container">
+  <h1 class="text-center">please login before entering the home page</h1>
+<form action="/loginsystem/login.php" method="POST">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">username</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name" Required>
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
+  </div>
+  
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    </div>
+
 
     <!-- Optional JavaScript; choose one of the two! -->
 
