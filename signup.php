@@ -1,3 +1,17 @@
+<?php
+if($_SERVER["REQUEST_METHOD"]=="POST"){
+include 'partials/_DBConnect.php';
+$username= $_POST['name'];
+$password= $_POST['password'];
+$cpassword= $_POST['cpassword'];
+}
+
+
+
+?>
+
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,9 +27,11 @@
   <body>
     <?php
     require 'partials/_nav.php';
-
-
     ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong>your account has been successfuly crated,now you can log into the website.
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
     <div class="container">
   <h1 class="text-center">please sign before login</h1>
 <form action="/loginsystem/signup.php" method="POST">
