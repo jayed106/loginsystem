@@ -8,8 +8,17 @@ $username= $_POST['name'];
 $password= $_POST['password'];
 $cpassword= $_POST['cpassword'];
 
-$exists=false;
-if(($password==$cpassword) && $exists==false){
+// $exists=false;
+$existsql = "select *from `users` where username='$username' ";
+$result= mysqli_query($conn,$existsql);
+$numRows= mysqli_num_rows($result);
+if($numRows>0){
+// $exists=true;
+$error = "username already exits";
+}
+else{
+  // $exists=false;
+if(($password==$cpassword)){
   $sql="INSERT INTO `users` (`username`, `password`, `dt`) VALUES 
   ('$username', '$password', current_timestamp())";
   $result= mysqli_query($conn,$sql);
@@ -18,8 +27,9 @@ if(($password==$cpassword) && $exists==false){
   }
 }
 else{
-  $error = true;
-}
+  $error = "passwords do not matched";
+  }
+    }
 }
 
 
@@ -52,7 +62,7 @@ else{
 }
     if($error){
      echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>ERROR!</strong>Account not created
+  <strong>ERROR!</strong>'.$error.'
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>';
 }
