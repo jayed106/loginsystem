@@ -1,10 +1,27 @@
 <?php
+$alert =false;
+$error = false;
 if($_SERVER["REQUEST_METHOD"]=="POST"){
+
 include 'partials/_DBConnect.php';
 $username= $_POST['name'];
 $password= $_POST['password'];
 $cpassword= $_POST['cpassword'];
+
+$exists=false;
+if(($password==$cpassword) && $exists==false){
+  $sql="INSERT INTO `users` (`username`, `password`, `dt`) VALUES 
+  ('$username', '$password', current_timestamp())";
+  $result= mysqli_query($conn,$sql);
+    if($result){
+    $alert= true;
+  }
 }
+else{
+  $error = true;
+}
+}
+
 
 
 
@@ -27,17 +44,27 @@ $cpassword= $_POST['cpassword'];
   <body>
     <?php
     require 'partials/_nav.php';
-    ?>
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    if($alert){
+     echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Success!</strong>your account has been successfuly crated,now you can log into the website.
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+</div>';
+}
+    if($error){
+     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>ERROR!</strong>Account not created
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
+
+    ?>
+   
     <div class="container">
   <h1 class="text-center">please sign before login</h1>
 <form action="/loginsystem/signup.php" method="POST">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">username</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name">
+    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="name" Required>
     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
   </div>
   <div class="mb-3">

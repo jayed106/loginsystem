@@ -5,11 +5,11 @@ $password="";
 $database="users";
 
 $conn=mysqli_connect($server,$user,$password,$database);
-if($conn){
+if(!$conn){
     
-    echo "connected !";
-}
-else{
+//     echo "connected !";
+// }
+// else{
     die ("not connected");
 }
 ?>
