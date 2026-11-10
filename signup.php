@@ -19,8 +19,9 @@ $error = "username already exits";
 else{
   // $exists=false;
 if(($password==$cpassword)){
+  $hash=password_hash($password,PASSWORD_DEFAULT);
   $sql="INSERT INTO `users` (`username`, `password`, `dt`) VALUES 
-  ('$username', '$password', current_timestamp())";
+  ('$username', '$hash', current_timestamp())";
   $result= mysqli_query($conn,$sql);
     if($result){
     $alert= true;
